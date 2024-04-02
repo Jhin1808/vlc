@@ -66,7 +66,7 @@ jobs:
                    
 
     - name: Build Project
-      run: make -j$(nproc)
+      run: make 
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
