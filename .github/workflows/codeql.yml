@@ -28,6 +28,13 @@ jobs:
       security-events: write
       actions: read
       contents: read
+      
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - language: c-cpp
+          build-mode: autobuild
 
     steps:
     - name: Checkout repository
@@ -72,6 +79,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: 'cpp'
+        build-mode: ${{ matrix.build-mode }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
