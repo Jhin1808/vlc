@@ -53,7 +53,8 @@ jobs:
                         libavcodec-dev \
                         libavutil-dev \
                         libavformat-dev libavcodec-dev libavutil-dev \
-                        libswscale-dev
+                        libswscale-dev \
+                        libtwolame-dev liba52-0.7.4-dev
 
                             
     - name: Initialize CodeQL
