@@ -47,8 +47,6 @@ jobs:
         sudo apt-get install -y autoconf automake libtool pkg-config build-essential
         # Add other project-specific dependencies here
 
-    - name: Run Bootstrap Script
-      run: ./bootstrap
 
     - name: Configure Project
       run: |
@@ -63,6 +61,7 @@ jobs:
                     --disable-live555 \
                     --disable-lua \
                     --disable-fribidi \
+                    --disable-xcb
                    
 
     - name: Build Project
