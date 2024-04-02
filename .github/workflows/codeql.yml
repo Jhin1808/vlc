@@ -41,16 +41,32 @@ jobs:
     - name: Bootstrap
       run: ./bootstrap
 
-    - name: Configure
-      run: ./configure
-
-    - name: Build
-      run: make
-      
-    - name: Configure and Build with Meson
+    - name: Install Build Dependencies
       run: |
-        meson setup builddir  # Create a build directory and run Meson setup
-        meson compile -C builddir  # Compile the project using Meson
+        sudo apt-get update
+        sudo apt-get install -y autoconf automake libtool pkg-config build-essential
+        # Add other project-specific dependencies here
+
+    - name: Run Bootstrap Script
+      run: ./bootstrap
+
+    - name: Configure Project
+      run: |
+        ./configure --enable-fast-install \
+                    --disable-a52 \
+                    --disable-alsa \
+                    --disable-avcodec --disable-avformat \
+                    --disable-postproc --disable-swscale \
+                    --disable-dbus \
+                    --disable-mad --disable-libmpeg2 \
+                    --disable-faad --disable-skins2 \
+                    --disable-live555 \
+                    --disable-lua \
+                    --disable-fribidi \
+                    --with-kde-solid='${{datadir}}/kde4/apps'
+
+    - name: Build Project
+      run: make -j$(nproc)
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
