@@ -57,7 +57,7 @@ jobs:
       if: matrix.language == 'c-cpp'
       run: |
         ./bootstrap
-        ./configure
+        ./configure --disable-avcodec
         make
 
     - name: Perform CodeQL Analysis
