@@ -22,55 +22,31 @@ on:
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    runs-on: ubuntu-latest  # Using a specific runner for simplicity
+    timeout-minutes: 360
     permissions:
       security-events: write
       actions: read
       contents: read
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: c-cpp
-          build-mode: autobuild
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      if: matrix.language == 'c-cpp'
+    - name: Setup Environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential git-core pkg-config \
-                        libvlc-dev libvlccore-dev vlc \
-                        liblua5.1-0-dev lua5.1 \
-                        libmpg123-dev \
-                        gstreamer1.0-plugins-base \
-                        gstreamer1.0-plugins-good \
-                        libavcodec-dev \
-                        libavutil-dev \
-                        libavformat-dev libavcodec-dev libavutil-dev \
-                        libswscale-dev \
-                        libtwolame-dev liba52-0.7.4-dev \
-                        libxcb-composite0-dev libxcb-randr0-dev libxcb-xkb-dev
+        sudo apt-get install -y meson ninja-build  # Install Meson and Ninja build system
 
-                            
+    - name: Configure and Build with Meson
+      run: |
+        meson setup builddir  # Create a build directory and run Meson setup
+        meson compile -C builddir  # Compile the project using Meson
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
-        languages: ${{ matrix.language }}
-    
-    - name: Configure and Build VLC
-      if: matrix.language == 'c-cpp'
-      run: |
-        ./bootstrap
-        ./configure
-        make
+        languages: 'cpp'
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
