@@ -63,7 +63,7 @@ jobs:
                     --disable-live555 \
                     --disable-lua \
                     --disable-fribidi \
-                    --with-kde-solid='${{datadir}}/kde4/apps'
+                   
 
     - name: Build Project
       run: make -j$(nproc)
