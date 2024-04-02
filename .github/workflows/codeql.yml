@@ -61,7 +61,8 @@ jobs:
                     --disable-live555 \
                     --disable-lua \
                     --disable-fribidi \
-                    --disable-xcb
+                    --disable-xcb \
+                    --disable-qt
                    
 
     - name: Build Project
