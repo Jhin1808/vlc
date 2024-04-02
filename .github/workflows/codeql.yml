@@ -52,7 +52,8 @@ jobs:
                         gstreamer1.0-plugins-good \
                         libavcodec-dev \
                         libavutil-dev \
-                        libavformat-dev libavcodec-dev libavutil-dev 
+                        libavformat-dev libavcodec-dev libavutil-dev \
+                        libswscale-dev
 
                             
     - name: Initialize CodeQL
