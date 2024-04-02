@@ -9,7 +9,7 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL"
+name: "CodeQL Analysis"
 
 on:
   push:
@@ -21,39 +21,22 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ubuntu-latest  # Using a specific runner for simplicity
-    timeout-minutes: 360
-    permissions:
-      security-events: write
-      actions: read
-      contents: read
-      
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: c-cpp
-          build-mode: autobuild
+    name: Analyze
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup Environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y autoconf automake libtool pkg-config build-essential
-        
-    - name: Bootstrap
-      run: ./bootstrap
-
     - name: Install Build Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y autoconf automake libtool pkg-config build-essential
-        # Add other project-specific dependencies here
+        sudo apt-get install -y autoconf automake libtool pkg-config build-essential gettext
+        # Add other VLC-specific build dependencies here
 
+    - name: Run Bootstrap Script
+      run: ./bootstrap
+      # Only necessary if your project doesn't include a pre-generated 'configure' script
 
     - name: Configure Project
       run: |
@@ -70,16 +53,16 @@ jobs:
                     --disable-fribidi \
                     --disable-xcb \
                     --disable-qt
-                   
-
-    - name: Build Project
-      run: autobuild
+      # Configure the project. Adjust flags as needed for your analysis
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: 'cpp'
-        build-mode: ${{ matrix.build-mode }}
+
+    - name: Autobuild Project
+      uses: github/codeql-action/autobuild@v3
+      # This step attempts to automatically build the project using common conventions
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
