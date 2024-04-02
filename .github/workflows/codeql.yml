@@ -45,17 +45,18 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential git-core pkg-config \
-                            libvlc-dev libvlccore-dev vlc \
-                            liblua5.1-0-dev lua5.1 \ # Include both the library and the byte compiler packages
-                            libarchive-dev live555 libdc1394-22-dev libraw1394-dev \
-                            libavc1394-dev libzvbi-dev libdvdread-dev libdvdnav-dev \
-                            libbluray-dev libopencv-dev smbclient libdsm-dev libssh2-1-dev \
-                            libnfs-dev libsmb2-dev \ 
-                            libmpg123-dev \  # Add this for libmpg123
-                            gstreamer1.0-plugins-base \  # Base plugins for GStreamer
-                            gstreamer1.0-plugins-good \  # A set of good-quality plugins under LGPL license
-                            libavcodec-dev \ 
-                            libavutil-dev 
+                        libvlc-dev libvlccore-dev vlc \
+                        liblua5.1-0-dev lua5.1 \
+                        libarchive-dev live555 libdc1394-22-dev libraw1394-dev \
+                        libavc1394-dev libzvbi-dev libdvdread-dev libdvdnav-dev \
+                        libbluray-dev libopencv-dev smbclient libdsm-dev libssh2-1-dev \
+                        libnfs-dev libsmb2-dev \
+                        libmpg123-dev \
+                        gstreamer1.0-plugins-base \
+                        gstreamer1.0-plugins-good \
+                        libavcodec-dev \
+                        libavutil-dev
+
                             
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
